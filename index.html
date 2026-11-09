@@ -4,742 +4,501 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090710">
+<meta name="theme-color" content="#090609">
 <title>Nancy — My Forever Princess ❤️</title>
-
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root{
- --bg:#090710;
- --wine:#651b3b;
- --pink:#ff76ad;
- --lav:#c8a9ff;
- --white:#fff1f8;
- --glass:rgba(255,255,255,.055);
+ --bg:#090609;--wine:#4b1028;--pink:#ff6ba7;
+ --lav:#c6a5ff;--white:#fff1f7;
+ --muted:#c4aeba;--glass:rgba(255,255,255,.055);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
- margin:0;
- min-height:100vh;
- background:
- radial-gradient(ellipse at 50% 0%,#421329 0%,transparent 45%),
- radial-gradient(ellipse at 100% 70%,#211431 0%,transparent 45%),
- var(--bg);
- color:var(--white);
- font-family:'DM Sans',sans-serif;
+ margin:0;background:
+ radial-gradient(ellipse at 15% 10%,#3c1028 0,transparent 35%),
+ radial-gradient(ellipse at 90% 45%,#24102e 0,transparent 38%),
+ var(--bg);color:var(--white);font-family:Inter,sans-serif;
  overflow-x:hidden;
 }
-button{font:inherit}
-#stars,.petals{
- position:fixed;inset:0;
- pointer-events:none;z-index:0;
- overflow:hidden;
-}
-.star{
- position:absolute;
- width:2px;height:2px;
- background:white;border-radius:50%;
- animation:twinkle 3s infinite alternate;
-}
-@keyframes twinkle{
- from{opacity:.15;transform:scale(.7)}
- to{opacity:1;transform:scale(1.6)}
-}
-.container{
- position:relative;z-index:2;
- max-width:580px;
- margin:auto;padding:30px 19px 65px;
-}
-.logo{
- letter-spacing:5px;font-size:10px;
- color:var(--lav);text-align:center;
-}
-h1,h2,h3{
- font-family:'Cormorant Garamond',serif;
- font-weight:500;
-}
-h1{
- font-size:clamp(48px,12vw,75px);
- line-height:.98;
- margin:25px 0 15px;
- background:linear-gradient(120deg,#fff,#ff8ebd,#c8a9ff);
- background-clip:text;-webkit-background-clip:text;
- color:transparent;
-}
-h2{font-size:32px;margin:12px 0}
-p{line-height:1.9}
-.muted{color:#cbb7cb}
-.center{text-align:center}
-.hidden{display:none!important}
-
-.glow{
- text-shadow:0 0 20px #ff75b588,0 0 45px #c8a9ff44;
-}
+button,input{font:inherit}
+button{cursor:pointer}
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.65}
+main{position:relative;z-index:1}
+section{padding:65px 18px;max-width:1050px;margin:auto}
 .hero{
- min-height:90vh;
- display:flex;flex-direction:column;
- align-items:center;justify-content:center;
- text-align:center;
+ min-height:92vh;display:flex;flex-direction:column;
+ justify-content:center;align-items:center;text-align:center;padding:70px 20px
 }
-.hero-heart{
- font-size:83px;
- margin:25px;
- filter:drop-shadow(0 0 25px #ff65ad);
- animation:heartbeat 2s infinite;
+.eyebrow{letter-spacing:5px;text-transform:uppercase;color:var(--lav);font-size:10px}
+.script{font-family:"Great Vibes",cursive;color:#ff9ac5}
+h1{font-family:"Cormorant Garamond",serif;font-size:clamp(55px,12vw,105px);font-weight:500;line-height:.95;margin:20px 0 10px}
+h2{font-family:"Cormorant Garamond",serif;font-size:clamp(35px,8vw,55px);font-weight:500;margin:10px 0}
+h3{font-family:"Cormorant Garamond",serif;font-size:27px;margin:10px 0}
+p{color:var(--muted);line-height:1.8}
+.glow{color:#ff8bbd;text-shadow:0 0 25px #ff4d9b}
+.btn{
+ border:1px solid #a64a76;background:linear-gradient(135deg,#681d3e,#301020);
+ color:white;padding:13px 21px;border-radius:30px;
+ transition:.25s;box-shadow:0 5px 25px #ff4d9b18
 }
-@keyframes heartbeat{
- 0%,100%{transform:scale(1)}
- 15%{transform:scale(1.15)}
- 30%{transform:scale(1)}
- 45%{transform:scale(1.1)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 0 25px #ff4d9b55}
+.btn.secondary{background:#ffffff0b;border-color:#ffffff30}
+.btn.small{padding:9px 15px;font-size:12px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
+.panel{
+ background:var(--glass);border:1px solid #ffffff18;
+ border-radius:23px;padding:23px;backdrop-filter:blur(15px);
+ box-shadow:0 15px 50px #0005
 }
-.button{
- border:1px solid #ff9dc955;
- background:linear-gradient(135deg,#ffffff13,#ffffff04);
- color:white;padding:15px 20px;
- border-radius:50px;
- cursor:pointer;
- backdrop-filter:blur(15px);
- transition:.3s;
-}
-.button:hover{
- transform:translateY(-3px);
- border-color:var(--pink);
- box-shadow:0 0 25px #ff76ad33;
-}
-.primary{
- background:linear-gradient(110deg,#a32758,#e65b9b,#8d68b8);
- border:0;padding:16px 30px;
- box-shadow:0 8px 30px #bd3c7955;
-}
-.envelope{
- font-size:95px;cursor:pointer;
- animation:float 3s infinite ease-in-out;
- filter:drop-shadow(0 0 20px #e65b9b);
-}
-@keyframes float{
- 50%{transform:translateY(-13px) rotate(4deg)}
-}
-.glass{
- background:linear-gradient(135deg,#ffffff10,#ffffff04);
- border:1px solid #ffffff20;
- border-radius:25px;
- padding:24px 20px;
- backdrop-filter:blur(20px);
- box-shadow:0 20px 55px #0005;
- margin:19px 0;
-}
-.crown{
- font-size:36px;
- filter:drop-shadow(0 0 12px #d5a8ff);
-}
-.section-title{
- text-align:center;
- font-size:30px;
- margin:35px 0 8px;
-}
-.grid{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:12px;margin-top:22px;
-}
+.section-head{text-align:center;margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
 .surprise{
- min-height:120px;
- padding:16px 8px;
- border-radius:20px;
- background:#ffffff09;
- border:1px solid #ffffff22;
- color:white;cursor:pointer;
- transition:.3s;
+ text-align:left;background:linear-gradient(145deg,#341326,#160d19);
+ border:1px solid #ffffff19;border-radius:17px;padding:17px;color:white;
+ min-height:120px;transition:.25s
 }
-.surprise:hover{
- transform:translateY(-5px);
- background:#b94d8025;
- border-color:#ff83b9;
+.surprise:hover{transform:translateY(-5px);border-color:#ff78b3}
+.surprise .emoji{font-size:25px;display:block;margin-bottom:12px}
+.surprise b{font-size:13px}
+.surprise small{display:block;color:#c9adbd;margin-top:6px;font-size:11px;line-height:1.5}
+.result{margin-top:18px;min-height:50px;color:#ffb4d2;line-height:1.8}
+input,textarea{
+ width:100%;padding:13px 15px;background:#ffffff0c;
+ border:1px solid #ffffff28;border-radius:13px;color:white;outline:none
 }
-.surprise .emoji{
- display:block;font-size:29px;margin-bottom:10px;
+input:focus,textarea:focus{border-color:var(--pink)}
+textarea{resize:vertical}
+.promise{display:flex;gap:12px;align-items:center;text-align:left;
+ background:#ffffff08;border:1px solid #ffffff15;border-radius:13px;
+ padding:13px;margin:9px 0;cursor:pointer}
+.promise span{color:var(--pink);font-size:20px}
+.promise.done{border-color:#ff85b6;background:#ff6ba714}
+.promise.done p{text-decoration:line-through;opacity:.6}
+footer{text-align:center;padding:55px 15px;color:#a991a0}
+.modal{
+ position:fixed;inset:0;z-index:20;background:#050207eF;
+ display:none;align-items:center;justify-content:center;padding:20px
 }
-.surprise small{
- display:block;color:#e9c8df;
- font-size:12px;
+.modal.show{display:flex}
+.modal-box{width:min(500px,100%);max-height:85vh;overflow:auto;
+ background:linear-gradient(145deg,#321326,#110a13);
+ border:1px solid #ff77ad66;border-radius:24px;padding:27px;text-align:center;
+ box-shadow:0 0 80px #ff398533;animation:pop .35s}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.close{float:right;background:none;color:white;border:0;font-size:23px}
+#petals{position:fixed;inset:0;pointer-events:none;z-index:10;overflow:hidden}
+.petal{position:absolute;top:-30px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(650deg);opacity:0}}
+.heart{position:fixed;pointer-events:none;animation:heart 2.5s forwards;z-index:11}
+@keyframes heart{to{transform:translateY(-180px) scale(1.8);opacity:0}}
+.star{position:absolute;color:#eacbff;cursor:pointer;text-shadow:0 0 12px #d69bff;animation:twinkle 2s infinite alternate}
+@keyframes twinkle{to{opacity:.25;transform:scale(.7)}}
+#universe{height:270px;position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(circle,#351638,#0a0710)}
+audio{width:100%;margin-top:12px;accent-color:#ff70a9}
+#ending{
+ position:fixed;inset:0;z-index:30;background:radial-gradient(circle,#651e40,#090609 70%);
+ display:none;align-items:center;justify-content:center;text-align:center;padding:24px
 }
-#messageBox{animation:enter .6s ease}
-@keyframes enter{
- from{opacity:0;transform:translateY(25px)}
- to{opacity:1;transform:translateY(0)}
-}
-.message{
- white-space:pre-line;
- font-family:'Cormorant Garamond',serif;
- font-size:21px;line-height:1.75;
- color:#ffe9f3;
-}
-.actions{
- display:flex;flex-wrap:wrap;
- justify-content:center;gap:10px;margin-top:22px;
-}
-.actions button{font-size:13px}
-.divider{
- width:65px;height:1px;
- margin:18px auto;
- background:linear-gradient(90deg,transparent,var(--pink),transparent);
-}
-#toast{
- position:fixed;bottom:25px;left:50%;
- transform:translateX(-50%);
- background:#fce9f5;color:#40132f;
- padding:12px 18px;border-radius:40px;
- z-index:20;display:none;
- width:max-content;max-width:90%;
-}
-footer{
- text-align:center;margin-top:55px;
- color:#ad91bb;font-size:10px;letter-spacing:3px;
-}
-#finalScreen{
- position:fixed;inset:0;z-index:30;
- background:radial-gradient(circle,#45152f,#090710 75%);
- display:flex;align-items:center;justify-content:center;
- padding:25px;text-align:center;
-}
-.final-content{max-width:450px;animation:enter 1.2s}
-.final-heart{
- font-size:100px;
- animation:heartbeat 1.5s infinite;
- filter:drop-shadow(0 0 30px #ff68a7);
-}
-#finalScreen h1{font-size:clamp(45px,11vw,70px)}
-.music-control{
- position:fixed;right:15px;top:15px;
- z-index:15;border-radius:50%;
- width:45px;height:45px;
- background:#ffffff15;border:1px solid #ffffff35;
- color:white;cursor:pointer;
-}
-.music-label{
- position:fixed;right:67px;top:28px;
- font-size:10px;color:#d9bce7;z-index:15;
-}
-.petal{
- position:fixed;top:-30px;
- animation:fall linear forwards;
- pointer-events:none;
-}
-@keyframes fall{
- to{transform:translateY(110vh) rotate(650deg);opacity:0}
-}
-@media(max-width:360px){
- .grid{gap:8px}
- .surprise{font-size:12px;padding:12px 5px}
+#ending.show{display:flex;animation:fade .8s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.end-content{max-width:650px}
+.end-content h2{font-size:clamp(42px,10vw,80px)}
+.hidden{display:none!important}
+#photoPreview{width:100%;max-height:260px;object-fit:cover;border-radius:15px;margin-top:12px}
+@media(max-width:500px){
+ section{padding:50px 15px}
+ .panel{padding:17px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .surprise{padding:13px;min-height:115px}
 }
 </style>
 </head>
-
 <body>
-
-<div id="stars"></div>
-<div class="petals" id="petals"></div>
-
-<button class="music-control" onclick="toggleMusic()" id="musicBtn">♫</button>
-<div class="music-label" id="musicLabel">Music off</div>
-
-<main class="container">
-
-<!-- OPENING -->
-<section class="hero" id="welcome">
-
-<div class="logo">A LITTLE UNIVERSE • MADE WITH LOVE</div>
-
-<div class="hero-heart">♡</div>
-
-<h1 class="glow">Nancy</h1>
-
-<h2 style="color:#d9b7ff;margin-top:0">
-My Forever Princess
-</h2>
-
-<div class="divider"></div>
-
-<p class="muted">
-Somewhere between a thousand stars<br>
-and a million little moments,<br>
-there is a little world made just for you.
-</p>
-
-<div class="envelope" onclick="enterWorld()">💌</div>
-
-<button class="button primary" onclick="enterWorld()">
-OPEN YOUR SECRET WORLD ✨
-</button>
-
-<p class="muted" style="font-size:11px;margin-top:30px">
-A special surprise for Nancy
-</p>
-
+<canvas id="stars"></canvas>
+<div id="petals"></div>
+<main>
+<section class="hero">
+ <div class="eyebrow">A little universe made just for you</div>
+ <div style="font-size:42px;margin-top:20px">🌹</div>
+ <h1 class="script">Nancy</h1>
+ <h2>My Forever <span class="glow">Princess</span></h2>
+ <p>Some people make life beautiful just by being in it.<br>
+ You are that person in my world.</p>
+ <div class="actions">
+  <button class="btn" onclick="document.getElementById('surprises').scrollIntoView()">Open Your World ❤️</button>
+  <button class="btn secondary" onclick="toggleMusic()">🎹 Play Piano</button>
+ </div>
+ <p style="font-size:11px;margin-top:35px">Made with endless love, just for Nancy</p>
 </section>
 
-<!-- MAIN WORLD -->
-<section id="world" class="hidden">
+<section id="surprises">
+ <div class="section-head">
+  <div class="eyebrow">12 little pieces of my heart</div>
+  <h2>Open Your <span class="script glow">Surprises</span></h2>
+  <p>Choose any little box. There's something waiting inside.</p>
+ </div>
+ <div class="grid" id="surpriseGrid"></div>
+ <div class="panel result" id="surpriseResult" style="text-align:center">
+  Your special message will appear here. 💗
+ </div>
+ <div class="actions">
+  <button class="btn secondary" onclick="shareSite()">Share Our Website ↗</button>
+  <button class="btn secondary" onclick="copySite()">Copy Website Link</button>
+ </div>
+</section>
 
-<div class="center glass">
-<div class="crown">♛</div>
-<div class="logo">WELCOME TO YOUR LITTLE UNIVERSE</div>
-<h2 class="glow">Hello, My Princess</h2>
-<p class="muted">
-Nancy, this entire little world was created
-with you in mind. Every button has a message,
-and every message has a little piece of love.
-</p>
-</div>
+<section id="vault">
+ <div class="section-head">
+  <div class="eyebrow">Only for my princess</div>
+  <h2>🔐 Secret Love Vault</h2>
+  <p>A little secret protected by a special number.</p>
+ </div>
+ <div class="panel" style="max-width:470px;margin:auto;text-align:center">
+  <div style="font-size:45px">💌</div>
+  <input id="vaultPin" type="password" inputmode="numeric" placeholder="Enter your secret PIN" maxlength="12">
+  <div class="actions"><button class="btn" onclick="unlockVault()">Unlock My Secret</button></div>
+  <div class="result" id="vaultResult"></div>
+ </div>
+</section>
 
-<h2 class="section-title">Choose Your Moment</h2>
-<p class="center muted">A little surprise for every kind of day.</p>
+<section id="rose">
+ <div class="section-head">
+  <div class="eyebrow">A flower for you</div>
+  <h2>Your Virtual <span class="script glow">Rose</span></h2>
+  <p>Whenever you need a hug, come here.</p>
+ </div>
+ <div class="panel" style="text-align:center">
+  <div id="roseFlower" style="font-size:90px;filter:drop-shadow(0 0 20px #ff5c9b)">🌹</div>
+  <h3>A thousand roses, just for you</h3>
+  <p>Sending you the biggest virtual hug from my heart.</p>
+  <div class="actions">
+   <button class="btn" onclick="giveRose()">🌹 Send me a rose</button>
+   <button class="btn secondary" onclick="hug()">🫂 Give me a hug</button>
+  </div>
+  <div id="roseResult" class="result"></div>
+ </div>
+</section>
 
-<div class="grid" id="surpriseGrid"></div>
+<section id="universeSection">
+ <div class="section-head">
+  <div class="eyebrow">You are my favourite constellation</div>
+  <h2>Our <span class="script glow">Universe</span></h2>
+  <p>Tap the stars to discover little messages.</p>
+ </div>
+ <div id="universe"></div>
+ <div class="result" id="starResult" style="text-align:center">Every star reminds me of you. ✨</div>
+</section>
 
-<div id="messageBox" class="glass hidden">
-<div class="center" id="msgEmoji" style="font-size:45px">❤️</div>
-<h2 class="center glow" id="msgTitle"></h2>
-<div class="divider"></div>
-<div class="message center" id="msgText"></div>
-<div class="actions">
-<button class="button" onclick="shareCurrent()">↗ Share</button>
-<button class="button" onclick="copyCurrent()">Copy ♡</button>
-<button class="button" onclick="backToGrid()">Go Back</button>
-</div>
-</div>
+<section id="game">
+ <div class="section-head">
+  <div class="eyebrow">A tiny game for my favourite girl</div>
+  <h2>How Well Do You <span class="script glow">Know Us?</span></h2>
+ </div>
+ <div class="panel" style="max-width:550px;margin:auto">
+  <h3 id="question">Ready, Princess?</h3>
+  <div id="answers" class="grid"></div>
+  <div class="result" id="gameResult"></div>
+  <div class="actions"><button class="btn" id="startGame" onclick="startGame()">Start the game 💗</button></div>
+ </div>
+</section>
 
-<div class="glass center">
-<div style="font-size:35px">🌹</div>
-<h2>A Little Reminder</h2>
-<p class="muted">
-You don't need a special occasion to deserve
-something beautiful, Nancy.
-</p>
-<button class="button" onclick="openSurprise(11)">
-Unlock the final chapter ♡
-</button>
-</div>
+<section id="dateNight">
+ <div class="section-head">
+  <div class="eyebrow">An invitation from my heart</div>
+  <h2>Our Virtual <span class="script glow">Date Night</span></h2>
+ </div>
+ <div class="panel" style="text-align:center">
+  <div style="font-size:60px">🌙🥂🌹</div>
+  <h3>Princess, you're invited!</h3>
+  <p>Tonight's plan: just you, me, beautiful music and a thousand conversations.</p>
+  <p><b>Dress code:</b> Your beautiful smile.</p>
+  <p><b>Location:</b> Somewhere inside our little world.</p>
+  <button class="btn" onclick="dateAccept()">Accept My Date Invitation 💌</button>
+  <div class="result" id="dateResult"></div>
+ </div>
+</section>
 
-<footer>
-MADE ESPECIALLY FOR NANCY<br><br>
-MY FOREVER PRINCESS • ♡
-</footer>
+<section id="voice">
+ <div class="section-head">
+  <div class="eyebrow">A message in my own voice</div>
+  <h2>My Voice, <span class="script glow">Your Heart</span></h2>
+  <p>Record a personal voice message for Nancy.</p>
+ </div>
+ <div class="panel" style="max-width:550px;margin:auto;text-align:center">
+  <div style="font-size:42px">🎙️</div>
+  <p id="recordStatus">Your voice can be a beautiful memory.</p>
+  <div class="actions">
+   <button class="btn" id="recordBtn" onclick="recordVoice()">● Start Recording</button>
+   <button class="btn secondary" onclick="stopVoice()">■ Stop</button>
+  </div>
+  <audio id="voicePlayback" controls class="hidden"></audio>
+  <button id="downloadVoice" class="btn secondary hidden" onclick="downloadVoice()">Download Voice Message</button>
+  <p style="font-size:11px">Recording is processed in your browser. Allow microphone access when asked.</p>
+ </div>
+</section>
 
+<section id="promises">
+ <div class="section-head">
+  <div class="eyebrow">10 things from my heart</div>
+  <h2>My Forever <span class="script glow">Promises</span></h2>
+  <p>Tap each promise to reveal it.</p>
+ </div>
+ <div class="panel" id="promiseList"></div>
+</section>
+
+<section id="piano">
+ <div class="section-head">
+  <div class="eyebrow">A melody just for you</div>
+  <h2>Our Romantic <span class="script glow">Piano</span></h2>
+  <p>Let a little music fill our world.</p>
+ </div>
+ <div class="panel" style="text-align:center">
+  <div style="font-size:45px">🎹</div>
+  <h3>Our Love Melody</h3>
+  <p>Upload your piano audio as <b>piano.mp3</b> in the same GitHub folder.</p>
+  <audio id="pianoAudio" controls loop preload="none">
+   <source src="piano.mp3" type="audio/mpeg">
+  </audio>
+  <div class="actions">
+   <button class="btn" onclick="toggleMusic()">Play / Pause Piano</button>
+   <button class="btn secondary" onclick="document.getElementById('pianoAudio').volume=Math.min(1,document.getElementById('pianoAudio').volume+.1)">Volume +</button>
+   <button class="btn secondary" onclick="document.getElementById('pianoAudio').volume=Math.max(0,document.getElementById('pianoAudio').volume-.1)">Volume −</button>
+  </div>
+  <div id="musicStatus" class="result">Add piano.mp3 to hear real piano music.</div>
+ </div>
+</section>
+
+<section id="final">
+ <div class="section-head">
+  <div class="eyebrow">One last little surprise</div>
+  <h2>The Final <span class="script glow">Chapter</span></h2>
+  <p>Some feelings deserve a beautiful ending. Or maybe a beautiful beginning.</p>
+  <button class="btn" onclick="finalSurprise()">Open My Heart ❤️</button>
+ </div>
 </section>
 </main>
 
-<!-- FINAL CINEMATIC ENDING -->
-<section id="finalScreen" class="hidden">
-<div class="final-content">
-<div class="final-heart">♥</div>
-<div class="logo">THE LAST PAGE OF THIS LITTLE WORLD</div>
-<h1>Nancy,<br>My Princess.</h1>
-<div class="divider"></div>
-<p style="line-height:2;color:#f6d9ed">
-If this little world made you smile,<br>
-then every second spent creating it<br>
-was worth it.<br><br>
-I hope you always feel appreciated,<br>
-respected and loved.<br><br>
-You are one of a kind. ♡
-</p>
-<h2 style="color:#e2c4ff">Forever my favourite person.</h2>
-<button class="button primary" onclick="closeFinal()">
-RETURN TO OUR LITTLE WORLD
-</button>
-</div>
-</section>
+<footer>
+ <div class="script" style="font-size:35px">Forever yours, Nancy</div>
+Made with love, for my one and only princess. ❤️
+</footer>
 
-<div id="toast"></div>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+ <div class="modal-box">
+  <button class="close" onclick="closeModal()">×</button>
+  <div style="font-size:45px">💗</div>
+  <h2 id="modalTitle" class="script">My Princess</h2>
+  <p id="modalText"></p>
+  <button class="btn" onclick="closeModal()">Close with love</button>
+ </div>
+</div>
+
+<div id="ending">
+ <div class="end-content">
+  <div style="font-size:65px">🌹💍🌹</div>
+  <div class="eyebrow">My heart has one favourite person</div>
+  <h2 class="script">Nancy, My Forever Princess</h2>
+  <p style="font-size:20px;color:#ffe2ef">Will you stay my forever princess?</p>
+  <div class="actions">
+   <button class="btn" onclick="endingYes()">YES, ALWAYS ❤️</button>
+   <button class="btn secondary" onclick="endingYes()">FOREVER 💗</button>
+  </div>
+  <div id="endingResult" class="result"></div>
+ </div>
+</div>
 
 <script>
-
-// ORIGINAL ROMANTIC MESSAGES
-const moments=[
-{
-icon:"🥺",name:"When You're Sad",
-title:"A Hug For Your Heart",
-msg:`Hey Nancy, my Princess. ♡
-
-I wish I could make every difficult day disappear.
-
-But please remember that you don't have to smile every second, and you don't have to pretend everything is okay.
-
-Take your time. Breathe. Rest.
-
-You deserve gentleness, happiness and a thousand reasons to smile.
-
-Sending you the warmest hug. 🌷`
-},
-{
-icon:"❤️",name:"When You Miss Me",
-title:"A Little Closer",
-msg:`Missing me, Princess? 🥹
-
-Imagine us sitting together, talking about absolutely nothing, laughing at silly things and forgetting about the world for a while.
-
-Until we get that moment, here's a little reminder:
-
-You are remembered. You are appreciated. And you deserve to feel special.
-
-A little love from me to you, Nancy. ❤️`
-},
-{
-icon:"🫂",name:"Your Virtual Hug",
-title:"The Biggest Hug",
-msg:`NANCYYYY! COME HERE! 🫂
-
-Consider this your unlimited virtual hug.
-
-A hug for your bad days.
-A hug for your overthinking.
-A hug for your happy moments.
-And one extra hug just because you're my Princess.
-
-No words required.
-
-Just a little warmth. ❤️`
-},
-{
-icon:"🌙",name:"Can't Sleep",
-title:"Under The Same Sky",
-msg:`Goodnight, beautiful Nancy. 🌙
-
-Let today's worries rest.
-
-You don't need to figure out your entire life tonight.
-
-Take a slow breath, relax and give yourself permission to sleep.
-
-May your dreams be peaceful and your tomorrow be beautiful.
-
-Sweet dreams, Princess. ✨`
-},
-{
-icon:"🌹",name:"100 Reasons",
-title:"Little Things I Adore",
-msg:`Dear Nancy,
-
-I adore your smile.
-I adore your personality.
-I adore your little habits.
-I adore your laughter.
-I adore the way you are yourself.
-
-But above everything, I hope you always remember:
-
-You don't have to be perfect to be precious.
-
-Just being YOU is enough. ♡`
-},
-{
-icon:"🥹",name:"When You're Angry",
-title:"Let's Choose Understanding",
-msg:`My Princess,
-
-I know that I won't always get everything right.
-
-Sometimes I might make mistakes or misunderstand you.
-
-But I hope we always remember that understanding each other matters more than winning an argument.
-
-Your feelings deserve respect.
-
-A little apology hug, Nancy. 🫂`
-},
-{
-icon:"💌",name:"My Letter",
-title:"Dear Nancy...",
-msg:`Dear Nancy,
-
-I wanted to make something different for you.
-
-Not an ordinary message.
-Not an ordinary gift.
-
-I wanted to create a little place you could revisit whenever you wanted.
-
-So I put together a few words, a little creativity and a lot of thought.
-
-I hope this makes you smile.
-
-With love, for my Princess. ❤️`
-},
-{
-icon:"✨",name:"Our Little Future",
-title:"A Thousand Little Moments",
-msg:`Nancy, imagine a future full of beautiful little moments.
-
-Random conversations.
-Unplanned laughter.
-Beautiful sunsets.
-Late-night talks.
-Little adventures.
-
-I hope life gives you countless reasons to smile.
-
-And I hope you never stop believing in beautiful possibilities. ♡`
-},
-{
-icon:"💗",name:"If You Feel Lonely",
-title:"You Matter",
-msg:`Hey Princess.
-
-On the days when everything feels quiet, remember that your presence matters.
-
-You deserve people who listen to you, respect you and appreciate you.
-
-Never make yourself smaller just to fit somewhere.
-
-You are enough, Nancy. Always remember that. ❤️`
-},
-{
-icon:"🎀",name:"Open Your Gift",
-title:"A Digital Gift For You",
-msg:`SURPRISE, NANCY! 🎀
-
-I couldn't wrap this in a physical gift box, so I created a tiny digital one.
-
-Inside it you'll find:
-
-A little affection.
-A little appreciation.
-A lot of effort.
-And one big wish:
-
-May your days be filled with happiness. ♡`
-},
-{
-icon:"🔐",name:"Secret Message",
-title:"Something Just For You",
-msg:`Psst... Nancy. 🤫
-
-Here's a secret:
-
-Sometimes the smallest gestures carry the biggest feelings.
-
-This entire website is one of those gestures.
-
-Every animation, every button and every little detail was made to give you a smile.
-
-You're special, Princess. ❤️`
-},
-{
-icon:"👑",name:"The Final Chapter",
-title:"My Forever Princess",
-msg:`Nancy...
-
-You reached the final chapter.
-
-But I don't want this to feel like an ending.
-
-I want this to be a little place you can revisit whenever you need a smile.
-
-You deserve kindness, respect, peace and happiness.
-
-Thank you for opening my little world.
-
-Now, Princess, one last surprise awaits you. ❤️`
-}
+const messages=[
+["🥺","When You're Sad","If today feels heavy, remember you don't have to carry everything alone. I wish I could hold your hand and remind you how special you are. You deserve every beautiful thing in this world."],
+["💌","When You Miss Me","Close your eyes for a moment. Imagine me holding you close. Distance can separate places, but it cannot change what you mean to me."],
+["🫂","You Need a Hug","Here's a hug that lasts a little longer than usual. No words needed. Just you, me, and a moment of peace."],
+["🌙","When You Can't Sleep","I hope your thoughts become quiet, your heart feels light, and your dreams are as beautiful as your smile. Good night, Princess."],
+["💗","100 Reasons","Your smile, your kindness, your little habits, your laugh, your heart. I could write a hundred reasons, but one is enough: you're you."],
+["🌸","When You're Angry","Your feelings matter to me. I don't want to win an argument; I want us to understand each other. Let's talk gently when you're ready."],
+["✉️","A Letter For You","Dear Nancy, you are one of the sweetest parts of my life. I may not always find the perfect words, but I hope you always feel the love behind them."],
+["🏡","Our Future","I dream of ordinary days with you: laughing together, sharing stories, supporting each other, and making little memories that become our favourite ones."],
+["🕯️","When You Feel Lonely","You are worthy of love, even on the days when you don't feel your best. I hope you remember that someone is cheering for you."],
+["🎁","A Little Gift","If I could wrap up one feeling and give it to you, it would be the feeling of being loved, appreciated, respected and safe."],
+["🤫","A Secret Message","Psst... my favourite notification is your name. My favourite thought is you. And my favourite dream is a future filled with happiness."],
+["💍","Our Final Chapter","This isn't the end of our story. It's a reminder that every beautiful chapter is worth writing with patience, kindness and love."]
 ];
 
-let current=-1;
-let audioContext=null;
-let musicTimer=null;
-let musicOn=false;
-let noteIndex=0;
-
-// BUILD SURPRISE BUTTONS
 const grid=document.getElementById("surpriseGrid");
-moments.forEach((m,i)=>{
- const b=document.createElement("button");
- b.className="surprise";
- b.innerHTML=`<span class="emoji">${m.icon}</span>${m.name}<small>Tap to open ♡</small>`;
- b.onclick=()=>openSurprise(i);
- grid.appendChild(b);
+messages.forEach((m,i)=>{
+ const b=document.createElement("button");b.className="surprise";
+ b.innerHTML=`<span class="emoji">${m[0]}</span><b>${i+1}. ${m[1]}</b><small>Tap to open your surprise</small>`;
+ b.onclick=()=>openSurprise(i);grid.appendChild(b);
+});
+function openSurprise(i){
+ document.getElementById("surpriseResult").innerHTML=
+ `<h3>${messages[i][0]} ${messages[i][1]}</h3><p>${messages[i][2]}</p>`;
+ if(i===11)document.getElementById("surpriseResult").scrollIntoView({behavior:"smooth"});
+}
+function modal(title,text){
+ document.getElementById("modalTitle").textContent=title;
+ document.getElementById("modalText").textContent=text;
+ document.getElementById("modal").classList.add("show");
+}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function unlockVault(){
+ const p=document.getElementById("vaultPin").value;
+ document.getElementById("vaultResult").textContent=p==="143"
+ ?"🔓 My secret: Nancy, you are not just special to me. You are a beautiful part of my world. Never forget how precious you are. ❤️"
+ :"That isn't the secret number, Princess. Try again. 💗";
+}
+function giveRose(){
+ document.getElementById("roseResult").textContent="🌹 A beautiful rose, just for you. May your day bloom with happiness!";
+ for(let i=0;i<12;i++)heart();
+}
+function hug(){
+ document.getElementById("roseResult").textContent="🫂 Hug delivered! Hold it for as long as you need. ❤️";
+ for(let i=0;i<18;i++)heart();
+}
+function heart(){
+ const e=document.createElement("div");e.className="heart";
+ e.textContent=["💗","💕","❤️","💖"][Math.floor(Math.random()*4)];
+ e.style.left=Math.random()*95+"vw";e.style.top=(55+Math.random()*35)+"vh";
+ document.body.appendChild(e);setTimeout(()=>e.remove(),2600);
+}
+function petals(){
+ const e=document.createElement("div");e.className="petal";e.textContent=["🌸","🌹","💗"][Math.floor(Math.random()*3)];
+ e.style.left=Math.random()*100+"vw";e.style.animationDuration=(5+Math.random()*6)+"s";
+ document.getElementById("petals").appendChild(e);setTimeout(()=>e.remove(),12000);
+}
+setInterval(petals,850);
+
+const universe=document.getElementById("universe");
+const starMessages=["You are my favourite star.","Even the night looks beautiful with you in my thoughts.","You make my little universe brighter.","If I could choose one star, I'd choose you.","You are my favourite kind of magic.","My world feels warmer because of you."];
+for(let i=0;i<30;i++){
+ const s=document.createElement("span");s.className="star";s.textContent="✦";
+ s.style.left=(Math.random()*94+2)+"%";s.style.top=(Math.random()*85+5)+"%";
+ s.style.fontSize=(10+Math.random()*18)+"px";
+ s.onclick=()=>document.getElementById("starResult").textContent=starMessages[i%starMessages.length];
+ universe.appendChild(s);
+}
+
+const questions=[
+ {q:"What makes our story special?",a:["Perfect moments","Being ourselves","Fancy things"],correct:1,why:"Exactly! It's being ourselves together. ❤️"},
+ {q:"What is my favourite thing about you?",a:["Your smile","Your kindness","Everything about you"],correct:2,why:"Everything. Every little thing. 💗"},
+ {q:"What should we always choose?",a:["Understanding","Silence forever","Winning arguments"],correct:0,why:"Always understanding and kindness. 🌹"},
+ {q:"What is my favourite future plan?",a:["A beautiful life together","Never talking","No memories"],correct:0,why:"A life full of beautiful memories. 🏡"}
+];
+let qIndex=0,score=0;
+function startGame(){qIndex=0;score=0;document.getElementById("startGame").classList.add("hidden");showQuestion()}
+function showQuestion(){
+ if(qIndex>=questions.length){
+  document.getElementById("question").textContent="You finished the game, Princess! 💗";
+  document.getElementById("answers").innerHTML="";
+  document.getElementById("gameResult").textContent=`Your score: ${score}/${questions.length}. The real prize is that you're amazing!`;
+  document.getElementById("startGame").textContent="Play again";document.getElementById("startGame").classList.remove("hidden");return;
+ }
+ const q=questions[qIndex];document.getElementById("question").textContent=q.q;
+ document.getElementById("answers").innerHTML="";
+ q.a.forEach((a,i)=>{
+  const b=document.createElement("button");b.className="btn secondary";b.textContent=a;
+  b.onclick=()=>{if(i===q.correct)score++;document.getElementById("gameResult").textContent=q.why;
+   qIndex++;setTimeout(showQuestion,1100)};
+  document.getElementById("answers").appendChild(b);
+ });
+}
+function dateAccept(){
+ document.getElementById("dateResult").textContent="Date accepted! ❤️ Our date starts with a smile and ends with a beautiful memory.";
+ for(let i=0;i<12;i++)heart();
+}
+const promises=[
+"I promise to listen to you with patience.",
+"I promise to respect your feelings.",
+"I promise to celebrate your happiness.",
+"I promise to support your dreams.",
+"I promise to speak with kindness.",
+"I promise to be honest with you.",
+"I promise to appreciate the little things.",
+"I promise to make time for meaningful moments.",
+"I promise to keep learning and growing.",
+"I promise to choose care and understanding."
+];
+const promiseList=document.getElementById("promiseList");
+promises.forEach((p,i)=>{
+ const el=document.createElement("div");el.className="promise";
+ el.innerHTML=`<span>♡</span><p style="margin:0">Promise ${i+1} — Tap to reveal</p>`;
+ el.onclick=()=>{el.classList.toggle("done");el.querySelector("p").textContent=el.classList.contains("done")?p:`Promise ${i+1} — Tap to reveal`;};
+ promiseList.appendChild(el);
 });
 
-// STAR FIELD
-const stars=document.getElementById("stars");
-for(let i=0;i<65;i++){
- const s=document.createElement("div");
- s.className="star";
- s.style.left=Math.random()*100+"%";
- s.style.top=Math.random()*100+"%";
- s.style.animationDelay=Math.random()*3+"s";
- stars.appendChild(s);
-}
-
-// ENTER WEBSITE
-function enterWorld(){
- document.getElementById("welcome").classList.add("hidden");
- document.getElementById("world").classList.remove("hidden");
- window.scrollTo({top:0,behavior:"smooth"});
-}
-
-// OPEN A SURPRISE
-function openSurprise(i){
- current=i;
- const m=moments[i];
-
- document.getElementById("msgEmoji").textContent=m.icon;
- document.getElementById("msgTitle").textContent=m.title;
- document.getElementById("msgText").textContent=m.msg;
-
- document.getElementById("messageBox").classList.remove("hidden");
-
- document.getElementById("messageBox").scrollIntoView({
- behavior:"smooth",block:"center"
- });
-
- if(i===11){
- setTimeout(()=>{
-  document.getElementById("finalScreen").classList.remove("hidden");
-  burst();
- },1300);
- }
-}
-
-function backToGrid(){
- document.getElementById("messageBox").classList.add("hidden");
- window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function closeFinal(){
- document.getElementById("finalScreen").classList.add("hidden");
- document.getElementById("messageBox").classList.add("hidden");
- window.scrollTo({top:0,behavior:"smooth"});
-}
-
-// SHARE
-async function shareCurrent(){
- const m=moments[current];
- const text=`${m.title}\n\n${m.msg}\n\nA little message from Nancy's special someone. ❤️`;
-
+let recorder,chunks=[],voiceBlob;
+async function recordVoice(){
  try{
-  if(navigator.share){
-   await navigator.share({
-    title:"A little surprise for Nancy ❤️",
-    text:text,
-    url:location.href
-   });
-  }else{
-   await navigator.clipboard.writeText(text+"\n"+location.href);
-   toast("Copied! Ready to share ♡");
-  }
- }catch(e){}
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  chunks=[];recorder=new MediaRecorder(stream);
+  recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+  recorder.onstop=()=>{
+   voiceBlob=new Blob(chunks,{type:recorder.mimeType||"audio/webm"});
+   const url=URL.createObjectURL(voiceBlob);
+   const player=document.getElementById("voicePlayback");
+   player.src=url;player.classList.remove("hidden");
+   document.getElementById("downloadVoice").classList.remove("hidden");
+   document.getElementById("recordStatus").textContent="Your voice message is ready. Play it or download it.";
+   stream.getTracks().forEach(t=>t.stop());
+  };
+  recorder.start();document.getElementById("recordStatus").textContent="Recording... Speak from your heart. ❤️";
+  document.getElementById("recordBtn").textContent="● Recording...";
+ }catch(e){document.getElementById("recordStatus").textContent="Microphone access unavailable. Please allow microphone permission and use HTTPS."}
+}
+function stopVoice(){
+ if(recorder&&recorder.state!=="inactive"){recorder.stop();document.getElementById("recordBtn").textContent="● Start Recording"}
+}
+function downloadVoice(){
+ if(!voiceBlob)return;
+ const a=document.createElement("a");a.href=URL.createObjectURL(voiceBlob);
+ a.download="Nancy-voice-message.webm";a.click();
 }
 
-// COPY
-async function copyCurrent(){
- const m=moments[current];
- try{
-  await navigator.clipboard.writeText(
-   m.title+"\n\n"+m.msg
-  );
-  toast("Copied with love! ❤️");
- }catch(e){
-  toast("Please copy the message manually.");
- }
+const piano=document.getElementById("pianoAudio");
+function toggleMusic(){
+ if(piano.paused){
+  piano.play().then(()=>document.getElementById("musicStatus").textContent="🎹 Piano music is playing. ❤️")
+  .catch(()=>document.getElementById("musicStatus").textContent="Please upload piano.mp3 into your GitHub repository, then try again.");
+ }else{piano.pause();document.getElementById("musicStatus").textContent="Music paused."}
+}
+piano.addEventListener("error",()=>document.getElementById("musicStatus").textContent="piano.mp3 not found. Upload your piano audio file beside index.html.");
+
+function finalSurprise(){
+ document.getElementById("ending").classList.add("show");
+ for(let i=0;i<30;i++)heart();
+}
+function endingYes(){
+ document.getElementById("endingResult").textContent="You just made this little universe brighter. Forever and always, Princess. ❤️";
+ for(let i=0;i<35;i++)heart();
+}
+function shareSite(){
+ const data={title:"Nancy — My Forever Princess",text:"A little universe made just for you, Nancy. ❤️",url:location.href};
+ if(navigator.share)navigator.share(data).catch(()=>{});
+ else copySite();
+}
+function copySite(){
+ if(navigator.clipboard&&window.isSecureContext){
+  navigator.clipboard.writeText(location.href).then(()=>alert("Website link copied! ❤️")).catch(()=>prompt("Copy this link:",location.href));
+ }else prompt("Copy this link:",location.href);
 }
 
-function toast(msg){
- const t=document.getElementById("toast");
- t.textContent=msg;
- t.style.display="block";
- setTimeout(()=>t.style.display="none",2600);
+// Gentle animated background stars
+const canvas=document.getElementById("stars"),ctx=canvas.getContext("2d");
+let dots=[];
+function resize(){
+ canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;
+ canvas.style.width=innerWidth+"px";canvas.style.height=innerHeight+"px";
+ ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+ dots=Array.from({length:85},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5+.3,a:Math.random()}));
 }
-
-// ORIGINAL SYNTHESIZED PIANO-STYLE MELODY
-// Audio starts only after the user taps the music button.
-function pianoNote(freq){
- if(!audioContext)return;
- const osc=audioContext.createOscillator();
- const gain=audioContext.createGain();
-
- osc.type="sine";
- osc.frequency.value=freq;
-
- gain.gain.setValueAtTime(.0001,audioContext.currentTime);
- gain.gain.exponentialRampToValueAtTime(.065,audioContext.currentTime+.04);
- gain.gain.exponentialRampToValueAtTime(.0001,audioContext.currentTime+1.8);
-
- osc.connect(gain);
- gain.connect(audioContext.destination);
-
- osc.start();
- osc.stop(audioContext.currentTime+1.9);
+function draw(){
+ ctx.clearRect(0,0,innerWidth,innerHeight);
+ dots.forEach(d=>{d.a+=(Math.random()-.5)*.035;d.a=Math.max(.15,Math.min(1,d.a));ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,190,220,${d.a})`;ctx.fill()});
+ requestAnimationFrame(draw);
 }
-
-const melody=[
- 261.63,329.63,392.00,329.63,
- 293.66,349.23,440.00,349.23,
- 261.63,329.63,392.00,523.25,
- 440.00,392.00,329.63,293.66
-];
-
-function playMelody(){
- if(!musicOn)return;
- pianoNote(melody[noteIndex%melody.length]);
- noteIndex++;
-}
-
-async function toggleMusic(){
- try{
-  if(!audioContext){
-   const AudioCtx=window.AudioContext||window.webkitAudioContext;
-   if(!AudioCtx){
-    toast("Audio isn't supported in this browser.");
-    return;
-   }
-   audioContext=new AudioCtx();
-  }
-
-  if(audioContext.state==="suspended"){
-   await audioContext.resume();
-  }
-
-  musicOn=!musicOn;
-
-  if(musicOn){
-   playMelody();
-   musicTimer=setInterval(playMelody,550);
-   document.getElementById("musicBtn").textContent="♫";
-   document.getElementById("musicLabel").textContent="Music on";
-  }else{
-   clearInterval(musicTimer);
-   document.getElementById("musicBtn").textContent="♪";
-   document.getElementById("musicLabel").textContent="Music off";
-  }
- }catch(e){
-  toast("Please try playing music again.");
- }
-}
-
-// FALLING PETALS
-function petal(){
- const p=document.createElement("div");
- p.className="petal";
- p.textContent=["🌸","🌹","💗","✦"][Math.floor(Math.random()*4)];
- p.style.left=Math.random()*100+"vw";
- p.style.animationDuration=(6+Math.random()*6)+"s";
- p.style.fontSize=(12+Math.random()*15)+"px";
- document.getElementById("petals").appendChild(p);
- setTimeout(()=>p.remove(),13000);
-}
-setInterval(petal,1000);
-
-// FINAL HEART EXPLOSION
-function burst(){
- for(let i=0;i<35;i++){
-  setTimeout(petal,i*65);
- }
-}
+addEventListener("resize",resize);resize();draw();
 </script>
-
 </body>
 </html>

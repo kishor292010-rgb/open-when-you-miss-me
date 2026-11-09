@@ -8,7 +8,10 @@
 <title>Nancy — My Forever Princess ❤️</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+ <script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onNancyTurnstileLoaded&render=explicit"
+  async defer>
+ </script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&display=swap');
@@ -230,28 +233,72 @@ audio{width:100%;margin-top:12px;accent-color:#ff70a9}
 </section>
 
 <!-- VOICE RECORDING AND SENDING -->
-<section id="voice">
- <div class="section-head">
-  <div class="eyebrow">A message from the heart</div>
-  <h2>My Voice, <span class="script glow">For Kishor</span></h2>
-  <p>Record a personal voice message, listen to it, and send it privately.</p>
- </div>
- <div class="panel" style="max-width:550px;margin:auto;text-align:center">
-  <div style="font-size:42px">🎙️</div>
-  <p id="recordStatus">Your voice can become a beautiful memory. ❤️</p>
-  <div class="actions">
-   <button class="btn" id="recordBtn" onclick="recordVoice()">● Start Recording</button>
-   <button class="btn secondary" onclick="stopVoice()">■ Stop</button>
+ 
+<section id="nancyVoice" class="nancy-voice">
+  <h2>My Voice, For Kishor ❤️</h2>
+  <p>Record a little message from your heart.</p>
+
+  <div class="voice-controls">
+    <button id="startNancyRecording">🎙️ Start Recording</button>
+    <button id="stopNancyRecording" disabled>⏹ Stop Recording</button>
   </div>
-  <audio id="voicePlayback" controls class="hidden"></audio>
-  <div id="turnstile-container" style="margin:18px 0"></div>
-  <div class="actions">
-   <button class="btn hidden" id="sendVoiceBtn" onclick="sendVoice()">💌 Send to Kishor</button>
-   <button class="btn secondary hidden" id="downloadVoice" onclick="downloadVoice()">Download Recording</button>
+
+  <p id="nancyRecordingStatus">Ready to record ❤️</p>
+
+  <div id="nancyPreviewArea" hidden>
+    <h3>Your Voice Preview</h3>
+    <audio id="nancyAudioPreview" controls></audio>
+
+    <div id="nancySecurityArea">
+      <p>Complete security verification to send your voice.</p>
+      <div id="nancyTurnstile"></div>
+    </div>
+
+    <button id="sendNancyVoice" disabled>💌 Send to Kishor</button>
   </div>
-  <p style="font-size:11px">Your recording is sent only when you press Send. Please allow microphone access.</p>
- </div>
+
+  <p id="nancyUploadStatus" role="status"></p>
 </section>
+
+<style>
+.nancy-voice {
+  text-align: center;
+  padding: 25px 16px;
+  margin: 25px auto;
+  max-width: 550px;
+  color: white;
+  background: linear-gradient(145deg,#160b14,#30101f);
+  border: 1px solid #87365d;
+  border-radius: 22px;
+}
+.nancy-voice button {
+  background: linear-gradient(135deg,#a52c63,#e65a9c);
+  color: white;
+  border: 0;
+  border-radius: 25px;
+  padding: 12px 20px;
+  margin: 8px;
+  cursor: pointer;
+}
+.nancy-voice button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+.nancy-voice audio {
+  display: block;
+  width: 100%;
+  margin: 15px auto;
+}
+#nancyTurnstile {
+  display: flex;
+  justify-content: center;
+  margin: 15px auto;
+}
+#nancyUploadStatus {
+  overflow-wrap: anywhere;
+}
+</style>
+
 
 <!-- PRIVATE OWNER DASHBOARD -->
 <section id="kishorDashboard">
@@ -356,17 +403,186 @@ Made with love, for my one and only princess. ❤️
 /* ---------------------------------
    SUPABASE PUBLIC CONFIGURATION
 ---------------------------------- */
-const SUPABASE_URL = "https://btgncczxncnvkhxodqie.supabase.co";
-const SUPABASE_KEY = "sb_publishable_UNT-tPCcPpCl8KZxaKotIg_kRH4tOjY";
-const TURNSTILE_SITE_KEY = "0x4AAAAAAF6S9rxO0LYBZqKJ";
 
-const VOICE_FUNCTION_URL =
-  SUPABASE_URL + "/functions/v1/nancy-voice-upload";
+const NANCY_FUNCTION_URL =
+  "https://btgncczxncnvkhxodqie.supabase.co/functions/v1/nancy-voice-upload";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const NANCY_PUBLIC_KEY =
+  "sb_publishable_UNT-tPCcPpCl8KZxaKotIg_kRH4tOjY";
+
+const NANCY_TURNSTILE_KEY =
+  "0x4AAAAAAF6S9rxO0LYBZqKJ";
+
+let nancyRecorder;
+let nancyChunks = [];
+let nancyAudioBlob = null;
+let nancyTurnstileToken = "";
+let nancyWidgetId = null;
+
+const startBtn = document.getElementById("startNancyRecording");
+const stopBtn = document.getElementById("stopNancyRecording");
+const previewArea = document.getElementById("nancyPreviewArea");
+const previewAudio = document.getElementById("nancyAudioPreview");
+const sendBtn = document.getElementById("sendNancyVoice");
+const statusText = document.getElementById("nancyRecordingStatus");
+const uploadStatus = document.getElementById("nancyUploadStatus");
+
+function setNancyStatus(message) {
+  statusText.textContent = message;
+}
+
+async function startNancyRecording() {
+  try {
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+      setNancyStatus("Your browser does not support voice recording.");
+      return;
+    }
+
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    nancyChunks = [];
+    nancyAudioBlob = null;
+    nancyTurnstileToken = "";
+    sendBtn.disabled = true;
+    previewArea.hidden = true;
+    uploadStatus.textContent = "";
+
+    const mimeOptions = [
+      "audio/webm;codecs=opus",
+      "audio/webm",
+      "audio/mp4"
+    ];
+
+    const mimeType = mimeOptions.find(type =>
+      MediaRecorder.isTypeSupported(type)
+    );
+
+    nancyRecorder = mimeType
+      ? new MediaRecorder(stream, { mimeType })
+      : new MediaRecorder(stream);
+
+    nancyRecorder.ondataavailable = event => {
+      if (event.data.size > 0) nancyChunks.push(event.data);
+    };
+
+    nancyRecorder.onstop = () => {
+      stream.getTracks().forEach(track => track.stop());
+
+      nancyAudioBlob = new Blob(nancyChunks, {
+        type: nancyRecorder.mimeType || "audio/webm"
+      });
+
+      previewAudio.src = URL.createObjectURL(nancyAudioBlob);
+      previewArea.hidden = false;
+
+      setNancyStatus("Recording complete! Listen to your voice below ❤️");
+      renderNancyTurnstile();
+    };
+
+    nancyRecorder.start();
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+    setNancyStatus("Recording... Speak from your heart ❤️");
+
+  } catch (error) {
+    setNancyStatus("Microphone permission is required.");
+  }
+}
+
+function stopNancyRecording() {
+  if (nancyRecorder && nancyRecorder.state === "recording") {
+    nancyRecorder.stop();
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+  }
+}
+
+function renderNancyTurnstile() {
+  const area = document.getElementById("nancyTurnstile");
+  area.innerHTML = "";
+
+  if (!window.turnstile) {
+    uploadStatus.textContent =
+      "Security verification is loading. Refresh the page and try again.";
+    return;
+  }
+
+  nancyWidgetId = window.turnstile.render(area, {
+    sitekey: NANCY_TURNSTILE_KEY,
+    callback: token => {
+      nancyTurnstileToken = token;
+      sendBtn.disabled = !nancyAudioBlob;
+      uploadStatus.textContent = "Verification complete ❤️";
+    },
+    "expired-callback": () => {
+      nancyTurnstileToken = "";
+      sendBtn.disabled = true;
+      uploadStatus.textContent = "Verification expired. Please verify again.";
+    },
+    "error-callback": () => {
+      nancyTurnstileToken = "";
+      sendBtn.disabled = true;
+      uploadStatus.textContent = "Security verification failed. Try again.";
+    }
+  });
+}
+
+async function sendNancyVoice() {
+  if (!nancyAudioBlob || !nancyTurnstileToken) {
+    uploadStatus.textContent = "Please record and complete verification first.";
+    return;
+  }
+
+  if (nancyAudioBlob.size > 10 * 1024 * 1024) {
+    uploadStatus.textContent = "Maximum recording size is 10 MB.";
+    return;
+  }
+
+  sendBtn.disabled = true;
+  uploadStatus.textContent = "Sending your voice privately... ❤️";
+
+  const formData = new FormData();
+  const extension = nancyAudioBlob.type.includes("mp4") ? "mp4" : "webm";
+
+  formData.append("file", nancyAudioBlob, `nancy-voice.${extension}`);
+  formData.append("turnstileToken", nancyTurnstileToken);
+
+  try {
+    const response = await fetch(NANCY_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "apikey": NANCY_PUBLIC_KEY
+      },
+      body: formData
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || "Upload failed.");
+    }
+
+    uploadStatus.textContent =
+      "Your voice message was sent privately to Kishor ❤️";
+
+    previewArea.hidden = true;
+    nancyAudioBlob = null;
+    nancyTurnstileToken = "";
+
+  } catch (error) {
+    uploadStatus.textContent = error.message;
+    sendBtn.disabled = false;
+  }
+}
+
+startBtn.addEventListener("click", startNancyRecording);
+stopBtn.addEventListener("click", stopNancyRecording);
+sendBtn.addEventListener("click", sendNancyVoice);
+
+window.onNancyTurnstileLoaded = function () {
+  if (!previewArea.hidden) renderNancyTurnstile();
+};
+
 
 /* ---------------------------------
    ORIGINAL 12 SURPRISES

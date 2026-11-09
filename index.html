@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open When You Miss Me ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;
+ background:linear-gradient(135deg,#ffe0ec,#f8c6dc,#e8c8ff);
+ font-family:Georgia,serif;color:#713d59;
+ text-align:center;overflow-x:hidden;
+}
+header{padding:55px 15px 20px}
+h1{font-size:clamp(30px,8vw,48px);color:#b52f70}
+p{line-height:1.7}
+.envelope{font-size:90px;cursor:pointer;margin:20px}
+button{
+ background:#d94d89;color:white;border:0;
+ border-radius:30px;padding:14px 25px;
+ font-size:16px;cursor:pointer;margin:8px;
+ box-shadow:0 5px 15px #c36a9a55;
+}
+.card{
+ background:#ffffffc9;border-radius:22px;
+ padding:25px;margin:16px auto;
+ max-width:440px;width:90%;
+ box-shadow:0 8px 25px #a94d7930;
+}
+.hidden{display:none}
+.heart{
+ position:fixed;bottom:-30px;
+ animation:float 6s linear infinite;
+ pointer-events:none;
+}
+@keyframes float{
+ to{transform:translateY(-110vh) rotate(360deg);opacity:0}
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Hey, My Favourite Person ❤️</h1>
+<p>I made something special just for you...</p>
+<div class="envelope" onclick="openLetter()">💌</div>
+<button onclick="openLetter()">Open Your Surprise</button>
+</header>
+
+<section id="surprise" class="hidden">
+<div class="card">
+<h2>Welcome, Beautiful ❤️</h2>
+<p>This little world belongs to you.
+Whenever you need a smile, come here.</p>
+</div>
+
+<div class="card">
+<h2>🥺 When You're Sad</h2>
+<p>Don't forget how special you are.
+You deserve happiness, love and endless smiles.</p>
+</div>
+
+<div class="card">
+<h2>❤️ When You Miss Me</h2>
+<p>Close your eyes for a moment.
+Imagine me holding your hand and telling you
+that you're never alone.</p>
+</div>
+
+<div class="card">
+<h2>🫂 When You Need a Hug</h2>
+<p>Sending you the biggest virtual hug!
+Consider yourself officially hugged. 🤗</p>
+<button onclick="alert('A million hugs for you! ❤️')">
+Get Your Hug
+</button>
+</div>
+
+<div class="card">
+<h2>🌙 When You Can't Sleep</h2>
+<p>Look at the stars tonight.
+Somewhere under the same sky,
+someone is thinking about you.</p>
+</div>
+
+<div class="card">
+<h2>🥹 When You're Angry With Me</h2>
+<p>I'm not perfect, but your feelings matter to me.
+Let's always talk, understand and make things right.</p>
+</div>
+
+<div class="card">
+<h2>🎁 Your Secret Gift</h2>
+<p>Here's one little reminder:</p>
+<h2>YOU ARE MY FAVOURITE PERSON ❤️</h2>
+</div>
+
+</section>
+
+<script>
+function openLetter(){
+ document.getElementById("surprise").classList.remove("hidden");
+ document.querySelector("header").style.display="none";
+ window.scrollTo(0,0);
+}
+function heart(){
+ const h=document.createElement("div");
+ h.className="heart";
+ h.innerHTML="❤️";
+ h.style.left=Math.random()*100+"vw";
+ h.style.fontSize=(15+Math.random()*25)+"px";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),6000);
+}
+setInterval(heart,500);
+</script>
+
+</body>
+</html>
+

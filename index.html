@@ -6,6 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090609">
 <title>Nancy — My Forever Princess ❤️</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -45,6 +49,7 @@ p{color:var(--muted);line-height:1.8}
  transition:.25s;box-shadow:0 5px 25px #ff4d9b18
 }
 .btn:hover{transform:translateY(-3px);box-shadow:0 0 25px #ff4d9b55}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn.secondary{background:#ffffff0b;border-color:#ffffff30}
 .btn.small{padding:9px 15px;font-size:12px}
 .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
@@ -70,7 +75,7 @@ input,textarea{
  border:1px solid #ffffff28;border-radius:13px;color:white;outline:none
 }
 input:focus,textarea:focus{border-color:var(--pink)}
-textarea{resize:vertical}
+input::placeholder{color:#c4aeba}
 .promise{display:flex;gap:12px;align-items:center;text-align:left;
  background:#ffffff08;border:1px solid #ffffff15;border-radius:13px;
  padding:13px;margin:9px 0;cursor:pointer}
@@ -79,7 +84,7 @@ textarea{resize:vertical}
 .promise.done p{text-decoration:line-through;opacity:.6}
 footer{text-align:center;padding:55px 15px;color:#a991a0}
 .modal{
- position:fixed;inset:0;z-index:20;background:#050207eF;
+ position:fixed;inset:0;z-index:20;background:#050207ef;
  display:none;align-items:center;justify-content:center;padding:20px
 }
 .modal.show{display:flex}
@@ -107,7 +112,11 @@ audio{width:100%;margin-top:12px;accent-color:#ff70a9}
 .end-content{max-width:650px}
 .end-content h2{font-size:clamp(42px,10vw,80px)}
 .hidden{display:none!important}
-#photoPreview{width:100%;max-height:260px;object-fit:cover;border-radius:15px;margin-top:12px}
+#voicePlayback{display:block}
+#turnstile-container{display:flex;justify-content:center;overflow:hidden}
+.voice-card{background:#ffffff08;border:1px solid #ffffff18;border-radius:16px;padding:15px;margin-top:14px}
+.voice-card audio{width:100%}
+.voice-download{display:inline-block;color:#ff9ac5;margin-top:12px;text-decoration:underline}
 @media(max-width:500px){
  section{padding:50px 15px}
  .panel{padding:17px}
@@ -116,17 +125,18 @@ audio{width:100%;margin-top:12px;accent-color:#ff70a9}
 }
 </style>
 </head>
+
 <body>
 <canvas id="stars"></canvas>
 <div id="petals"></div>
+
 <main>
 <section class="hero">
  <div class="eyebrow">A little universe made just for you</div>
  <div style="font-size:42px;margin-top:20px">🌹</div>
  <h1 class="script">Nancy</h1>
  <h2>My Forever <span class="glow">Princess</span></h2>
- <p>Some people make life beautiful just by being in it.<br>
- You are that person in my world.</p>
+ <p>Some people make life beautiful just by being in it.<br>You are that person in my world.</p>
  <div class="actions">
   <button class="btn" onclick="document.getElementById('surprises').scrollIntoView()">Open Your World ❤️</button>
   <button class="btn secondary" onclick="toggleMusic()">🎹 Play Piano</button>
@@ -141,9 +151,7 @@ audio{width:100%;margin-top:12px;accent-color:#ff70a9}
   <p>Choose any little box. There's something waiting inside.</p>
  </div>
  <div class="grid" id="surpriseGrid"></div>
- <div class="panel result" id="surpriseResult" style="text-align:center">
-  Your special message will appear here. 💗
- </div>
+ <div class="panel result" id="surpriseResult" style="text-align:center">Your special message will appear here. 💗</div>
  <div class="actions">
   <button class="btn secondary" onclick="shareSite()">Share Our Website ↗</button>
   <button class="btn secondary" onclick="copySite()">Copy Website Link</button>
@@ -221,22 +229,56 @@ audio{width:100%;margin-top:12px;accent-color:#ff70a9}
  </div>
 </section>
 
+<!-- VOICE RECORDING AND SENDING -->
 <section id="voice">
  <div class="section-head">
-  <div class="eyebrow">A message in my own voice</div>
-  <h2>My Voice, <span class="script glow">Your Heart</span></h2>
-  <p>Record a personal voice message for Nancy.</p>
+  <div class="eyebrow">A message from the heart</div>
+  <h2>My Voice, <span class="script glow">For Kishor</span></h2>
+  <p>Record a personal voice message, listen to it, and send it privately.</p>
  </div>
  <div class="panel" style="max-width:550px;margin:auto;text-align:center">
   <div style="font-size:42px">🎙️</div>
-  <p id="recordStatus">Your voice can be a beautiful memory.</p>
+  <p id="recordStatus">Your voice can become a beautiful memory. ❤️</p>
   <div class="actions">
    <button class="btn" id="recordBtn" onclick="recordVoice()">● Start Recording</button>
    <button class="btn secondary" onclick="stopVoice()">■ Stop</button>
   </div>
   <audio id="voicePlayback" controls class="hidden"></audio>
-  <button id="downloadVoice" class="btn secondary hidden" onclick="downloadVoice()">Download Voice Message</button>
-  <p style="font-size:11px">Recording is processed in your browser. Allow microphone access when asked.</p>
+  <div id="turnstile-container" style="margin:18px 0"></div>
+  <div class="actions">
+   <button class="btn hidden" id="sendVoiceBtn" onclick="sendVoice()">💌 Send to Kishor</button>
+   <button class="btn secondary hidden" id="downloadVoice" onclick="downloadVoice()">Download Recording</button>
+  </div>
+  <p style="font-size:11px">Your recording is sent only when you press Send. Please allow microphone access.</p>
+ </div>
+</section>
+
+<!-- PRIVATE OWNER DASHBOARD -->
+<section id="kishorDashboard">
+ <div class="section-head">
+  <div class="eyebrow">Private owner area</div>
+  <h2>Kishor's <span class="script glow">Voice Vault</span></h2>
+  <p>Private access to the voice messages sent from this website.</p>
+ </div>
+ <div class="panel" style="max-width:550px;margin:auto">
+  <div id="ownerLogin">
+   <h3>🔐 Owner Login</h3>
+   <input id="ownerEmail" type="email" autocomplete="username" placeholder="Your Supabase account email">
+   <div style="height:10px"></div>
+   <input id="ownerPassword" type="password" autocomplete="current-password" placeholder="Your password">
+   <div class="actions">
+    <button class="btn" id="ownerLoginBtn" onclick="ownerLogin()">Login</button>
+   </div>
+  </div>
+  <div id="ownerPanel" class="hidden">
+   <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <h3>💌 Received Messages</h3>
+    <button class="btn secondary small" onclick="ownerLogout()">Logout</button>
+   </div>
+   <button class="btn small" onclick="loadVoiceMessages()">↻ Refresh Messages</button>
+   <div id="voiceMessageList" class="result">Your messages will appear here.</div>
+  </div>
+  <p id="ownerStatus" class="result"></p>
  </div>
 </section>
 
@@ -264,8 +306,8 @@ audio{width:100%;margin-top:12px;accent-color:#ff70a9}
   </audio>
   <div class="actions">
    <button class="btn" onclick="toggleMusic()">Play / Pause Piano</button>
-   <button class="btn secondary" onclick="document.getElementById('pianoAudio').volume=Math.min(1,document.getElementById('pianoAudio').volume+.1)">Volume +</button>
-   <button class="btn secondary" onclick="document.getElementById('pianoAudio').volume=Math.max(0,document.getElementById('pianoAudio').volume-.1)">Volume −</button>
+   <button class="btn secondary" onclick="changeVolume(.1)">Volume +</button>
+   <button class="btn secondary" onclick="changeVolume(-.1)">Volume −</button>
   </div>
   <div id="musicStatus" class="result">Add piano.mp3 to hear real piano music.</div>
  </div>
@@ -311,6 +353,24 @@ Made with love, for my one and only princess. ❤️
 </div>
 
 <script>
+/* ---------------------------------
+   SUPABASE PUBLIC CONFIGURATION
+---------------------------------- */
+const SUPABASE_URL = "https://btgncczxncnvkhxodqie.supabase.co";
+const SUPABASE_KEY = "sb_publishable_UNT-tPCcPpCl8KZxaKotIg_kRH4tOjY";
+const TURNSTILE_SITE_KEY = "0x4AAAAAAF6S9rxO0LYBZqKJ";
+
+const VOICE_FUNCTION_URL =
+  SUPABASE_URL + "/functions/v1/nancy-voice-upload";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+/* ---------------------------------
+   ORIGINAL 12 SURPRISES
+---------------------------------- */
 const messages=[
 ["🥺","When You're Sad","If today feels heavy, remember you don't have to carry everything alone. I wish I could hold your hand and remind you how special you are. You deserve every beautiful thing in this world."],
 ["💌","When You Miss Me","Close your eyes for a moment. Imagine me holding you close. Distance can separate places, but it cannot change what you mean to me."],
@@ -327,28 +387,37 @@ const messages=[
 ];
 
 const grid=document.getElementById("surpriseGrid");
+
 messages.forEach((m,i)=>{
- const b=document.createElement("button");b.className="surprise";
+ const b=document.createElement("button");
+ b.className="surprise";
  b.innerHTML=`<span class="emoji">${m[0]}</span><b>${i+1}. ${m[1]}</b><small>Tap to open your surprise</small>`;
- b.onclick=()=>openSurprise(i);grid.appendChild(b);
+ b.onclick=()=>openSurprise(i);
+ grid.appendChild(b);
 });
+
 function openSurprise(i){
  document.getElementById("surpriseResult").innerHTML=
  `<h3>${messages[i][0]} ${messages[i][1]}</h3><p>${messages[i][2]}</p>`;
  if(i===11)document.getElementById("surpriseResult").scrollIntoView({behavior:"smooth"});
 }
+
 function modal(title,text){
  document.getElementById("modalTitle").textContent=title;
  document.getElementById("modalText").textContent=text;
  document.getElementById("modal").classList.add("show");
 }
-function closeModal(){document.getElementById("modal").classList.remove("show")}
+function closeModal(){
+ document.getElementById("modal").classList.remove("show");
+}
+
 function unlockVault(){
  const p=document.getElementById("vaultPin").value;
  document.getElementById("vaultResult").textContent=p==="143"
  ?"🔓 My secret: Nancy, you are not just special to me. You are a beautiful part of my world. Never forget how precious you are. ❤️"
  :"That isn't the secret number, Princess. Try again. 💗";
 }
+
 function giveRose(){
  document.getElementById("roseResult").textContent="🌹 A beautiful rose, just for you. May your day bloom with happiness!";
  for(let i=0;i<12;i++)heart();
@@ -358,56 +427,105 @@ function hug(){
  for(let i=0;i<18;i++)heart();
 }
 function heart(){
- const e=document.createElement("div");e.className="heart";
+ const e=document.createElement("div");
+ e.className="heart";
  e.textContent=["💗","💕","❤️","💖"][Math.floor(Math.random()*4)];
- e.style.left=Math.random()*95+"vw";e.style.top=(55+Math.random()*35)+"vh";
- document.body.appendChild(e);setTimeout(()=>e.remove(),2600);
+ e.style.left=Math.random()*95+"vw";
+ e.style.top=(55+Math.random()*35)+"vh";
+ document.body.appendChild(e);
+ setTimeout(()=>e.remove(),2600);
 }
 function petals(){
- const e=document.createElement("div");e.className="petal";e.textContent=["🌸","🌹","💗"][Math.floor(Math.random()*3)];
- e.style.left=Math.random()*100+"vw";e.style.animationDuration=(5+Math.random()*6)+"s";
- document.getElementById("petals").appendChild(e);setTimeout(()=>e.remove(),12000);
+ const e=document.createElement("div");
+ e.className="petal";
+ e.textContent=["🌸","🌹","💗"][Math.floor(Math.random()*3)];
+ e.style.left=Math.random()*100+"vw";
+ e.style.animationDuration=(5+Math.random()*6)+"s";
+ document.getElementById("petals").appendChild(e);
+ setTimeout(()=>e.remove(),12000);
 }
 setInterval(petals,850);
 
+/* ---------------------------------
+   UNIVERSE
+---------------------------------- */
 const universe=document.getElementById("universe");
-const starMessages=["You are my favourite star.","Even the night looks beautiful with you in my thoughts.","You make my little universe brighter.","If I could choose one star, I'd choose you.","You are my favourite kind of magic.","My world feels warmer because of you."];
+const starMessages=[
+"You are my favourite star.",
+"Even the night looks beautiful with you in my thoughts.",
+"You make my little universe brighter.",
+"If I could choose one star, I'd choose you.",
+"You are my favourite kind of magic.",
+"My world feels warmer because of you."
+];
+
 for(let i=0;i<30;i++){
- const s=document.createElement("span");s.className="star";s.textContent="✦";
- s.style.left=(Math.random()*94+2)+"%";s.style.top=(Math.random()*85+5)+"%";
+ const s=document.createElement("span");
+ s.className="star";
+ s.textContent="✦";
+ s.style.left=(Math.random()*94+2)+"%";
+ s.style.top=(Math.random()*85+5)+"%";
  s.style.fontSize=(10+Math.random()*18)+"px";
  s.onclick=()=>document.getElementById("starResult").textContent=starMessages[i%starMessages.length];
  universe.appendChild(s);
 }
 
+/* ---------------------------------
+   QUIZ
+---------------------------------- */
 const questions=[
  {q:"What makes our story special?",a:["Perfect moments","Being ourselves","Fancy things"],correct:1,why:"Exactly! It's being ourselves together. ❤️"},
  {q:"What is my favourite thing about you?",a:["Your smile","Your kindness","Everything about you"],correct:2,why:"Everything. Every little thing. 💗"},
  {q:"What should we always choose?",a:["Understanding","Silence forever","Winning arguments"],correct:0,why:"Always understanding and kindness. 🌹"},
  {q:"What is my favourite future plan?",a:["A beautiful life together","Never talking","No memories"],correct:0,why:"A life full of beautiful memories. 🏡"}
 ];
+
 let qIndex=0,score=0;
-function startGame(){qIndex=0;score=0;document.getElementById("startGame").classList.add("hidden");showQuestion()}
+
+function startGame(){
+ qIndex=0;
+ score=0;
+ document.getElementById("gameResult").textContent="";
+ document.getElementById("startGame").classList.add("hidden");
+ showQuestion();
+}
+
 function showQuestion(){
  if(qIndex>=questions.length){
   document.getElementById("question").textContent="You finished the game, Princess! 💗";
   document.getElementById("answers").innerHTML="";
   document.getElementById("gameResult").textContent=`Your score: ${score}/${questions.length}. The real prize is that you're amazing!`;
-  document.getElementById("startGame").textContent="Play again";document.getElementById("startGame").classList.remove("hidden");return;
+  document.getElementById("startGame").textContent="Play again";
+  document.getElementById("startGame").classList.remove("hidden");
+  return;
  }
- const q=questions[qIndex];document.getElementById("question").textContent=q.q;
+
+ const q=questions[qIndex];
+ document.getElementById("question").textContent=q.q;
  document.getElementById("answers").innerHTML="";
+
  q.a.forEach((a,i)=>{
-  const b=document.createElement("button");b.className="btn secondary";b.textContent=a;
-  b.onclick=()=>{if(i===q.correct)score++;document.getElementById("gameResult").textContent=q.why;
-   qIndex++;setTimeout(showQuestion,1100)};
+  const b=document.createElement("button");
+  b.className="btn secondary";
+  b.textContent=a;
+  b.onclick=()=>{
+   if(i===q.correct)score++;
+   document.getElementById("gameResult").textContent=q.why;
+   qIndex++;
+   setTimeout(showQuestion,1100);
+  };
   document.getElementById("answers").appendChild(b);
  });
 }
+
 function dateAccept(){
  document.getElementById("dateResult").textContent="Date accepted! ❤️ Our date starts with a smile and ends with a beautiful memory.";
  for(let i=0;i<12;i++)heart();
 }
+
+/* ---------------------------------
+   10 PROMISES
+---------------------------------- */
 const promises=[
 "I promise to listen to you with patience.",
 "I promise to respect your feelings.",
@@ -420,85 +538,450 @@ const promises=[
 "I promise to keep learning and growing.",
 "I promise to choose care and understanding."
 ];
+
 const promiseList=document.getElementById("promiseList");
+
 promises.forEach((p,i)=>{
- const el=document.createElement("div");el.className="promise";
+ const el=document.createElement("div");
+ el.className="promise";
  el.innerHTML=`<span>♡</span><p style="margin:0">Promise ${i+1} — Tap to reveal</p>`;
- el.onclick=()=>{el.classList.toggle("done");el.querySelector("p").textContent=el.classList.contains("done")?p:`Promise ${i+1} — Tap to reveal`;};
+ el.onclick=()=>{
+  el.classList.toggle("done");
+  el.querySelector("p").textContent=
+   el.classList.contains("done")?p:`Promise ${i+1} — Tap to reveal`;
+ };
  promiseList.appendChild(el);
 });
 
-let recorder,chunks=[],voiceBlob;
+/* ---------------------------------
+   VOICE RECORDING
+---------------------------------- */
+let recorder=null;
+let chunks=[];
+let voiceBlob=null;
+let voiceMime="audio/webm";
+let turnstileToken="";
+let turnstileWidget=null;
+let recordingStream=null;
+
+function setupTurnstile(){
+ if(!window.turnstile){
+  setTimeout(setupTurnstile,500);
+  return;
+ }
+
+ if(turnstileWidget!==null)return;
+
+ turnstileWidget=turnstile.render("#turnstile-container",{
+  sitekey:TURNSTILE_SITE_KEY,
+
+  callback:function(token){
+   turnstileToken=token;
+  },
+
+  "expired-callback":function(){
+   turnstileToken="";
+  },
+
+  "error-callback":function(){
+   turnstileToken="";
+   document.getElementById("recordStatus").textContent=
+    "Security verification failed. Please refresh the verification.";
+  }
+ });
+}
+
+setupTurnstile();
+
 async function recordVoice(){
  try{
-  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-  chunks=[];recorder=new MediaRecorder(stream);
-  recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
-  recorder.onstop=()=>{
-   voiceBlob=new Blob(chunks,{type:recorder.mimeType||"audio/webm"});
-   const url=URL.createObjectURL(voiceBlob);
-   const player=document.getElementById("voicePlayback");
-   player.src=url;player.classList.remove("hidden");
-   document.getElementById("downloadVoice").classList.remove("hidden");
-   document.getElementById("recordStatus").textContent="Your voice message is ready. Play it or download it.";
-   stream.getTracks().forEach(t=>t.stop());
+  if(!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder){
+   throw new Error("Recording is not supported by this browser.");
+  }
+
+  if(recorder && recorder.state==="recording"){
+   document.getElementById("recordStatus").textContent="Recording is already running.";
+   return;
+  }
+
+  recordingStream=await navigator.mediaDevices.getUserMedia({audio:true});
+  chunks=[];
+  voiceBlob=null;
+
+  const formats=["audio/webm","audio/mp4","audio/ogg"];
+  const supported=formats.find(type=>MediaRecorder.isTypeSupported(type));
+
+  recorder=supported
+   ?new MediaRecorder(recordingStream,{mimeType:supported})
+   :new MediaRecorder(recordingStream);
+
+  recorder.ondataavailable=event=>{
+   if(event.data && event.data.size>0)chunks.push(event.data);
   };
-  recorder.start();document.getElementById("recordStatus").textContent="Recording... Speak from your heart. ❤️";
+
+  recorder.onstop=()=>{
+   voiceMime=(recorder.mimeType || "audio/webm").split(";")[0];
+
+   voiceBlob=new Blob(chunks,{type:voiceMime});
+
+   const player=document.getElementById("voicePlayback");
+   if(player.src)URL.revokeObjectURL(player.src);
+   player.src=URL.createObjectURL(voiceBlob);
+   player.classList.remove("hidden");
+
+   document.getElementById("downloadVoice").classList.remove("hidden");
+   document.getElementById("sendVoiceBtn").classList.remove("hidden");
+
+   document.getElementById("recordStatus").textContent=
+    "Recording ready! Listen first, then send it to Kishor. ❤️";
+
+   document.getElementById("recordBtn").textContent="● Start Recording";
+
+   if(recordingStream){
+    recordingStream.getTracks().forEach(track=>track.stop());
+    recordingStream=null;
+   }
+  };
+
+  recorder.start();
+
+  document.getElementById("recordStatus").textContent=
+   "Recording... Speak from your heart. ❤️";
+
   document.getElementById("recordBtn").textContent="● Recording...";
- }catch(e){document.getElementById("recordStatus").textContent="Microphone access unavailable. Please allow microphone permission and use HTTPS."}
+
+ }catch(error){
+  document.getElementById("recordStatus").textContent=
+   error.message || "Microphone unavailable. Allow microphone access and use HTTPS.";
+ }
 }
+
 function stopVoice(){
- if(recorder&&recorder.state!=="inactive"){recorder.stop();document.getElementById("recordBtn").textContent="● Start Recording"}
+ if(recorder && recorder.state!=="inactive"){
+  recorder.stop();
+ }
 }
+
 function downloadVoice(){
  if(!voiceBlob)return;
- const a=document.createElement("a");a.href=URL.createObjectURL(voiceBlob);
- a.download="Nancy-voice-message.webm";a.click();
+
+ const extension=voiceMime==="audio/mp4"?"mp4":
+  voiceMime==="audio/ogg"?"ogg":
+  voiceMime==="audio/wav"?"wav":
+  voiceMime==="audio/mpeg"?"mp3":"webm";
+
+ const url=URL.createObjectURL(voiceBlob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="Nancy-voice-message."+extension;
+ a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
+/* ---------------------------------
+   SEND VOICE TO PRIVATE STORAGE
+---------------------------------- */
+async function sendVoice(){
+ const status=document.getElementById("recordStatus");
+ const sendBtn=document.getElementById("sendVoiceBtn");
+
+ if(!voiceBlob){
+  status.textContent="Please record a voice message first.";
+  return;
+ }
+
+ if(!turnstileToken){
+  status.textContent="Please complete the security verification first.";
+  return;
+ }
+
+ if(voiceBlob.size>10*1024*1024){
+  status.textContent="Recording is too large. Maximum size is 10 MB.";
+  return;
+ }
+
+ const extensionMap={
+  "audio/webm":"webm",
+  "audio/mp4":"mp4",
+  "audio/mpeg":"mp3",
+  "audio/ogg":"ogg",
+  "audio/wav":"wav"
+ };
+
+ const extension=extensionMap[voiceMime];
+
+ if(!extension){
+  status.textContent="Unsupported recording format. Please record again.";
+  return;
+ }
+
+ sendBtn.disabled=true;
+ sendBtn.textContent="Sending...";
+
+ try{
+  const file=new File(
+   [voiceBlob],
+   "nancy-voice-message."+extension,
+   {type:voiceMime}
+  );
+
+  const form=new FormData();
+  form.append("file",file);
+  form.append("turnstileToken",turnstileToken);
+
+  const response=await fetch(VOICE_FUNCTION_URL,{
+   method:"POST",
+   headers:{apikey:SUPABASE_KEY},
+   body:form
+  });
+
+  const result=await response.json();
+
+  if(!response.ok || !result.success){
+   throw new Error(result.error || "Upload failed.");
+  }
+
+  status.textContent="Your voice message has been sent privately to Kishor. ❤️";
+  sendBtn.classList.add("hidden");
+
+  if(window.turnstile && turnstileWidget!==null){
+   turnstile.reset(turnstileWidget);
+  }
+
+  turnstileToken="";
+
+ }catch(error){
+  status.textContent="Could not send: "+error.message;
+ }finally{
+  sendBtn.disabled=false;
+  sendBtn.textContent="💌 Send to Kishor";
+ }
+}
+
+/* ---------------------------------
+   KISHOR PRIVATE VOICE DASHBOARD
+---------------------------------- */
+async function ownerLogin(){
+ const email=document.getElementById("ownerEmail").value.trim();
+ const password=document.getElementById("ownerPassword").value;
+ const status=document.getElementById("ownerStatus");
+ const loginBtn=document.getElementById("ownerLoginBtn");
+
+ if(!email || !password){
+  status.textContent="Enter your email and password.";
+  return;
+ }
+
+ loginBtn.disabled=true;
+ status.textContent="Logging in...";
+
+ try{
+  const {data,error}=await supabaseClient.auth.signInWithPassword({
+   email,
+   password
+  });
+
+  if(error)throw error;
+
+  document.getElementById("ownerLogin").classList.add("hidden");
+  document.getElementById("ownerPanel").classList.remove("hidden");
+
+  status.textContent="Welcome to your private voice vault. ❤️";
+  await loadVoiceMessages();
+
+ }catch(error){
+  status.textContent="Login failed: "+error.message;
+ }finally{
+  loginBtn.disabled=false;
+ }
+}
+
+async function ownerLogout(){
+ await supabaseClient.auth.signOut();
+
+ document.getElementById("ownerLogin").classList.remove("hidden");
+ document.getElementById("ownerPanel").classList.add("hidden");
+ document.getElementById("ownerPassword").value="";
+ document.getElementById("voiceMessageList").textContent="Login to view your messages.";
+ document.getElementById("ownerStatus").textContent="Logged out.";
+}
+
+async function loadVoiceMessages(){
+ const list=document.getElementById("voiceMessageList");
+ list.textContent="Loading your messages...";
+
+ const {data:sessionData}=await supabaseClient.auth.getSession();
+
+ if(!sessionData.session){
+  list.textContent="Please log in again.";
+  document.getElementById("ownerLogin").classList.remove("hidden");
+  document.getElementById("ownerPanel").classList.add("hidden");
+  return;
+ }
+
+ const {data:messages,error}=await supabaseClient
+  .from("voice_messages")
+  .select("id,file_path,created_at")
+  .order("created_at",{ascending:false});
+
+ if(error){
+  list.textContent="Could not load messages: "+error.message;
+  return;
+ }
+
+ if(!messages || messages.length===0){
+  list.textContent="No voice messages received yet. 💗";
+  return;
+ }
+
+ list.replaceChildren();
+
+ for(const message of messages){
+  const {data,error:urlError}=await supabaseClient
+   .storage
+   .from("nancy-voice-messages")
+   .createSignedUrl(message.file_path,3600);
+
+  const card=document.createElement("div");
+  card.className="voice-card";
+
+  const date=document.createElement("p");
+  date.textContent=new Date(message.created_at).toLocaleString();
+  card.appendChild(date);
+
+  if(urlError || !data?.signedUrl){
+   const errorText=document.createElement("p");
+   errorText.textContent="Could not open this recording.";
+   card.appendChild(errorText);
+  }else{
+   const audio=document.createElement("audio");
+   audio.controls=true;
+   audio.src=data.signedUrl;
+
+   const download=document.createElement("a");
+   download.href=data.signedUrl;
+   download.target="_blank";
+   download.rel="noopener noreferrer";
+   download.className="voice-download";
+   download.textContent="Open / Download Voice Message";
+
+   card.appendChild(audio);
+   card.appendChild(download);
+  }
+
+  list.appendChild(card);
+ }
+}
+
+/* ---------------------------------
+   PIANO
+---------------------------------- */
 const piano=document.getElementById("pianoAudio");
+
 function toggleMusic(){
  if(piano.paused){
-  piano.play().then(()=>document.getElementById("musicStatus").textContent="🎹 Piano music is playing. ❤️")
-  .catch(()=>document.getElementById("musicStatus").textContent="Please upload piano.mp3 into your GitHub repository, then try again.");
- }else{piano.pause();document.getElementById("musicStatus").textContent="Music paused."}
+  piano.play().then(()=>{
+   document.getElementById("musicStatus").textContent="🎹 Piano music is playing. ❤️";
+  }).catch(()=>{
+   document.getElementById("musicStatus").textContent="Please upload piano.mp3 into your GitHub repository, then try again.";
+  });
+ }else{
+  piano.pause();
+  document.getElementById("musicStatus").textContent="Music paused.";
+ }
 }
-piano.addEventListener("error",()=>document.getElementById("musicStatus").textContent="piano.mp3 not found. Upload your piano audio file beside index.html.");
 
+function changeVolume(amount){
+ piano.volume=Math.max(0,Math.min(1,piano.volume+amount));
+}
+
+piano.addEventListener("error",()=>{
+ document.getElementById("musicStatus").textContent=
+  "piano.mp3 not found. Upload your piano audio file beside index.html.";
+});
+
+/* ---------------------------------
+   FINAL SURPRISE
+---------------------------------- */
 function finalSurprise(){
  document.getElementById("ending").classList.add("show");
  for(let i=0;i<30;i++)heart();
 }
+
 function endingYes(){
- document.getElementById("endingResult").textContent="You just made this little universe brighter. Forever and always, Princess. ❤️";
+ document.getElementById("endingResult").textContent=
+  "You just made this little universe brighter. Forever and always, Princess. ❤️";
  for(let i=0;i<35;i++)heart();
 }
+
+/* ---------------------------------
+   SHARE
+---------------------------------- */
 function shareSite(){
- const data={title:"Nancy — My Forever Princess",text:"A little universe made just for you, Nancy. ❤️",url:location.href};
- if(navigator.share)navigator.share(data).catch(()=>{});
- else copySite();
-}
-function copySite(){
- if(navigator.clipboard&&window.isSecureContext){
-  navigator.clipboard.writeText(location.href).then(()=>alert("Website link copied! ❤️")).catch(()=>prompt("Copy this link:",location.href));
- }else prompt("Copy this link:",location.href);
+ const data={
+  title:"Nancy — My Forever Princess",
+  text:"A little universe made just for you, Nancy. ❤️",
+  url:location.href
+ };
+
+ if(navigator.share){
+  navigator.share(data).catch(()=>{});
+ }else{
+  copySite();
+ }
 }
 
-// Gentle animated background stars
-const canvas=document.getElementById("stars"),ctx=canvas.getContext("2d");
-let dots=[];
-function resize(){
- canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;
- canvas.style.width=innerWidth+"px";canvas.style.height=innerHeight+"px";
- ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
- dots=Array.from({length:85},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5+.3,a:Math.random()}));
+function copySite(){
+ if(navigator.clipboard && window.isSecureContext){
+  navigator.clipboard.writeText(location.href)
+   .then(()=>alert("Website link copied! ❤️"))
+   .catch(()=>prompt("Copy this link:",location.href));
+ }else{
+  prompt("Copy this link:",location.href);
+ }
 }
+
+/* ---------------------------------
+   ANIMATED BACKGROUND STARS
+---------------------------------- */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
+let dots=[];
+
+function resize(){
+ canvas.width=innerWidth*devicePixelRatio;
+ canvas.height=innerHeight*devicePixelRatio;
+ canvas.style.width=innerWidth+"px";
+ canvas.style.height=innerHeight+"px";
+
+ ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+
+ dots=Array.from({length:85},()=>({
+  x:Math.random()*innerWidth,
+  y:Math.random()*innerHeight,
+  r:Math.random()*1.5+.3,
+  a:Math.random()
+ }));
+}
+
 function draw(){
  ctx.clearRect(0,0,innerWidth,innerHeight);
- dots.forEach(d=>{d.a+=(Math.random()-.5)*.035;d.a=Math.max(.15,Math.min(1,d.a));ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,190,220,${d.a})`;ctx.fill()});
+
+ dots.forEach(d=>{
+  d.a+=(Math.random()-.5)*.035;
+  d.a=Math.max(.15,Math.min(1,d.a));
+  ctx.beginPath();
+  ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+  ctx.fillStyle=`rgba(255,190,220,${d.a})`;
+  ctx.fill();
+ });
+
  requestAnimationFrame(draw);
 }
-addEventListener("resize",resize);resize();draw();
+
+addEventListener("resize",resize);
+resize();
+draw();
 </script>
 </body>
 </html>
